@@ -115,7 +115,7 @@ export default function SalesTeamTable() {
     (async () => {
       try {
         const res = await axios.get(
-          `${serverDomain}/jobcard/jobcarddetails/${projectId}`,
+          `${serverDomain}/jobcard/jobcard/byProjectId/${projectId}`,
           {
             headers: {
               Authorization: authToken,
