@@ -18,17 +18,30 @@ export default function Teams() {
   useEffect(() => {
     (async () => {
       try {
+        // Retrieve auth token from session storage
+        let authToken = sessionStorage.getItem("user")
+          ? JSON.parse(sessionStorage.getItem("user")).accessToken
+          : null;
+
+        // Make the API request with the token in headers
         const res = await axios.get(
           `${serverDomain}/employee/list?page=1&limit=10`,
           {
             headers: {
-              Authorization: authToken,
+              Authorization: `Bearer ${authToken}`, // Assuming the token is a Bearer token
             },
           }
         );
 
         console.log(res);
         setTeams(res.data.data);
+
+        // If a new token is returned, store it in session storage
+        if (res.data?.token) {
+          const user = { accessToken: res.data.token };
+          sessionStorage.setItem("user", JSON.stringify(user));
+        }
+
       } catch (error) {
         console.log(error);
       }
